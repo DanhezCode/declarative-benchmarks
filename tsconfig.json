@@ -12,8 +12,10 @@
     // Force module detection when appropriate (recommended for ESNext)
     "moduleDetection": "force",
 
-    // Modern JSX transform for React (no need to import React)
+    // Modern JSX transform for React/Preact (no need to import React)
     "jsx": "react-jsx",
+    // For preact projects, uncomment the following line:
+    // "jsxImportSource": "preact",
 
     // Allow .js files inside the project
     "allowJs": true,
