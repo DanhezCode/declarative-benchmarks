@@ -172,6 +172,6 @@ If your project uses React or Preact in a standard way, it’s **easier and more
 
 ---
 
-## ⭐ Support
+### ⭐ Support
 
 If this template helped you, consider giving it a star.
