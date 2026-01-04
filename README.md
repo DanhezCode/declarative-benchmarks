@@ -1,19 +1,41 @@
-# 📘 Project Setup
+# 📘 TypeScript Project Template
 
-This project is configured with **TypeScript**, **ESLint**, **Prettier**, and **Husky**.  
-You can install dependencies using **pnpm** or **Bun**.
+This repository is a **TypeScript template** preconfigured with:
+
+- **ESLint** for linting
+- **Prettier** for formatting
+- **Husky** for Git hooks
+- **Conventional Commits** validation in pre-commit
+- **Type checking** and **test scripts**
+- Compatible with **pnpm**, **npm**, **yarn**, and **bun**
+
+You can use **any package manager you prefer**. All commands shown below work the same way across tools.
 
 ---
 
 ## 🚀 Installation
 
-### Using pnpm
+Install dependencies using your preferred package manager:
+
+### pnpm
 
 ```bash
 pnpm install
 ```
 
-### Using Bun
+### npm
+
+```bash
+npm install
+```
+
+### yarn
+
+```bash
+yarn install
+```
+
+### bun
 
 ```bash
 bun install
@@ -23,38 +45,112 @@ bun install
 
 ## 🔧 Initialize Husky
 
-Husky is initialized through the `prepare` script:
+After installing dependencies, you must run the `prepare` script:
 
 ```bash
 pnpm prepare
+# or npm run prepare
+# or yarn prepare
+# or bun run prepare
 ```
 
-This will create the initialize `.husky/`
+Once initialized, **before every commit**, Husky will automatically:
+
+- Run ESLint
+- Format code with Prettier
+- Check TypeScript types
+- Run tests
+- **Validate commit messages using Conventional Commits**
+
+This ensures consistent, clean, and safe commits.
+
+---
+
+## 📝 Conventional Commits
+
+This template enforces **Conventional Commits** automatically during `pre-commit`.  
+If your commit message does not follow the standard, the commit will be rejected.
+
+### Common commit types
+
+| Type          | Purpose                                        |
+| ------------- | ---------------------------------------------- |
+| **feat:**     | A new feature                                  |
+| **fix:**      | A bug fix                                      |
+| **docs:**     | Documentation changes                          |
+| **style:**    | Formatting only (no code changes)              |
+| **refactor:** | Code refactoring without behavior changes      |
+| **test:**     | Adding or updating tests                       |
+| **chore:**    | Maintenance tasks (configs, tooling, CI, etc.) |
 
 ---
 
 ## 📂 Available Scripts
 
-### pnpm
+You can run these commands with **pnpm**, **npm**, **yarn**, or **bun**.
+
+### 🔍 Lint
 
 ```bash
-pnpm build        # compile TypeScript
-pnpm lint         # run ESLint
-pnpm lint:fix     # fix ESLint issues
-pnpm typecheck    # run TypeScript type checking
-pnpm format       # format with Prettier
-pnpm test         # run Node.js tests
-pnpm prepare      # initialize Husky
+pnpm lint
 ```
 
-### Bun
+Runs ESLint to detect code issues.
+
+### 🛠 Fix Lint Issues
 
 ```bash
-bun run build
-bun run lint
-bun run lint:fix
-bun run typecheck
-bun run format
-bun run test
-bun run prepare
+pnpm lint:fix
 ```
+
+Automatically fixes ESLint problems when possible.
+
+### 🎨 Format
+
+```bash
+pnpm format
+```
+
+Formats the entire codebase using Prettier.
+
+### 🧪 Type Check
+
+```bash
+pnpm typecheck
+```
+
+Runs TypeScript’s type checker without emitting files.
+
+### 🧪 Tests
+
+```bash
+pnpm test
+```
+
+Runs your Node.js test suite.
+
+---
+
+## 🔄 Updating Dependencies
+
+This project uses **strict versioning** (`save-exact=true`), so dependencies **do not update automatically**.  
+If you want to update them, you must do it **manually** with your package manager:
+
+- **pnpm**
+  ```bash
+  pnpm update --latest
+  ```
+- **npm**
+  ```bash
+  npm update
+  ```
+- **yarn**
+  ```bash
+  yarn upgrade --latest
+  ```
+- **bun**
+  ```bash
+  bun update
+  ```
+
+This prevents inconsistent installations across machines and ensures full reproducibility.
