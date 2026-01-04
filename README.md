@@ -170,4 +170,6 @@ If your project uses React or Preact in a standard way, it’s **easier and more
 - **Vite + Preact**
 - Or any React framework template of your choice
 
-These templates already include the correct JSX, TS, and ESLint settings.
+## ⭐ Support
+
+If this template helped you, consider giving it a star.
