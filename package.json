@@ -1,8 +1,9 @@
 {
-  "name": "@danhezcode/ts-template",
+  "name": "@danhezcode/performance-tests",
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
+    "bench": "node src/utils/runBenchmark.js",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "typecheck": "tsc --noEmit",
@@ -26,5 +27,8 @@
   },
   "peerDependencies": {
     "typescript": "5"
+  },
+  "dependencies": {
+    "fast-json-stringify": "6.1.1"
   }
 }
