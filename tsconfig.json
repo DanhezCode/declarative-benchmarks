@@ -19,6 +19,7 @@
 
     // Allow .js files inside the project
     "allowJs": true,
+    // "checkJs": true,
 
     // Module resolution optimized for modern bundlers
     "moduleResolution": "bundler",
@@ -31,6 +32,9 @@
 
     // Do not emit .js files; type checking only
     "noEmit": true,
+    // "outDir": "dist",
+    // "declaration": true,
+    // "emitDeclarationOnly": true,
 
     // Enable TypeScript strict mode
     "strict": true,

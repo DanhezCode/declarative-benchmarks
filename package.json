@@ -1,9 +1,19 @@
 {
-  "name": "@danhezcode/performance-tests",
-  "module": "src/index.ts",
+  "name": "@danhezcode/declarative-benchmarks",
+  "version": "1.0.0",
   "type": "module",
+  "bin": {
+    "bench": "dist/bin/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
-    "bench": "node src/utils/runBenchmark.js",
+    "bench": "node dist/bin/index.js",
+    "dev": "node --watch esbuild.config.js",
+    "build": "node esbuild.config.js",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "typecheck": "tsc --noEmit",
@@ -16,6 +26,8 @@
     "@commitlint/config-conventional": "20.3.0",
     "@eslint/js": "9.39.2",
     "@types/bun": "latest",
+    "@types/node": "25.0.3",
+    "esbuild": "0.27.2",
     "eslint": "9.39.2",
     "eslint-import-resolver-typescript": "4.4.4",
     "eslint-plugin-import": "2.32.0",
@@ -29,6 +41,6 @@
     "typescript": "5"
   },
   "dependencies": {
-    "fast-json-stringify": "6.1.1"
+    "simple-statistics": "7.8.8"
   }
 }

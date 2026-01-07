@@ -18,6 +18,8 @@ export default [
       "eslint.config.js",
       "prettier.config.js",
       "commitlint.config.js",
+      "esbuild.config.js",
+      "bench/**",
 
       // Dependency folders
       "node_modules",
@@ -60,6 +62,7 @@ export default [
     languageOptions: {
       parserOptions: {
         project: "./tsconfig.json",
+        // projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
