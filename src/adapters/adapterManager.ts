@@ -1,7 +1,7 @@
-import configManager from "../config/configManager";
+import configManager from "../config/configManager.ts";
 
-import { DefaultComparatorAdapter } from "./metrics/defaultComparator";
-import { DefaultLoggerAdapter } from "./metrics/defaultLogger";
+import { DefaultComparatorAdapter } from "./metrics/defaultComparator.ts";
+import { DefaultLoggerAdapter } from "./metrics/defaultLogger.ts";
 
 /**
  * Adapter manager for metrics handling.

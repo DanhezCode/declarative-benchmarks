@@ -1,6 +1,6 @@
-import type { BenchmarkOptions, RunResult } from "../types";
+import type { BenchmarkOptions, RunResult } from "../types.ts";
 
-import { calculateStatistics } from "./statisticsCalculator";
+import { calculateStatistics } from "./statisticsCalculator.ts";
 
 /**
  * Runs a benchmark function multiple times and measures times and resources.

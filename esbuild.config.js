@@ -6,7 +6,7 @@ const commonOptions = {
   platform: "node",
   target: "node20",
   entryPoints: ["src/index.ts"],
-  external: ["typescript"], // since it's peer dep
+  external: ["esbuild", "typescript"], // prevent bundling of esbuild and ts
 };
 
 // await build({

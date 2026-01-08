@@ -1,5 +1,5 @@
-import type { CaseResult, ComparatorAdapter } from "../../types";
-import { formatNumber } from "../../utils/formatNumber";
+import type { CaseResult, ComparatorAdapter } from "../../types.ts";
+import { formatNumber } from "../../utils/formatNumber.ts";
 
 interface CompareOptions {
   scenarioName: string;

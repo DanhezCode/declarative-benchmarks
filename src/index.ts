@@ -1,5 +1,5 @@
-import discoveryManager from "./discovery/discoveryManager";
-import { runFunctionsBenchmark } from "./utils/runFunctions";
+import discoveryManager from "./discovery/discoveryManager.ts";
+import { runFunctionsBenchmark } from "./utils/runFunctions.ts";
 
 /**
  * Main entry point for running benchmarks.

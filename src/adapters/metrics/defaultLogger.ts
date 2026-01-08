@@ -1,5 +1,5 @@
-import type { LoggerAdapter, Statistics } from "../../types";
-import { formatNumber } from "../../utils/formatNumber";
+import type { LoggerAdapter, Statistics } from "../../types.ts";
+import { formatNumber } from "../../utils/formatNumber.ts";
 
 interface LogOptions {
   name: string;

@@ -1,8 +1,9 @@
 import fs from "fs";
 import path from "path";
 
-import configManager from "../config/configManager";
+import configManager from "../config/configManager.ts";
 import type { Benchmark, DiscoveredBenchmark } from "../types";
+import { loadModule } from "../utils/loadModule.ts";
 
 /**
  * Benchmark discovery manager.
@@ -12,8 +13,8 @@ class DiscoveryManager {
    * Discovers benchmark manifests in the specified directory.
    */
   async discoverBenchmarks(): Promise<DiscoveredBenchmark[]> {
-    const benchmarkDir = (configManager.resolve("discovery.benchmarkDir") as string) || "./bench";
-    const maxDepth = (configManager.resolve("discovery.maxDepth") as number) || 2;
+    const benchmarkDir = configManager.resolve("discovery.benchmarkDir") as string;
+    const maxDepth = configManager.resolve("discovery.maxDepth") as number;
 
     const manifests: DiscoveredBenchmark[] = [];
     await this.scanDirectory(benchmarkDir, manifests, 0, maxDepth);
@@ -31,7 +32,7 @@ class DiscoveryManager {
   }
 
   /**
-   * Recursively scans a directory for manifest.js files.
+   * Recursively scans a directory for manifest files.
    * @param {string} dir - Directory to scan
    * @param {Array} manifests - Array to store found manifests
    * @param {number} currentDepth - Current depth
@@ -53,7 +54,7 @@ class DiscoveryManager {
 
         if (stat.isDirectory()) {
           await this.scanDirectory(fullPath, manifests, currentDepth + 1, maxDepth);
-        } else if (item === "manifest") {
+        } else if (item.startsWith("manifest.") && !item.endsWith(".map")) {
           const manifestPath = path.resolve(fullPath);
           const manifest = await this.loadManifest(manifestPath);
           if (manifest) {
@@ -100,7 +101,7 @@ class DiscoveryManager {
             maxDepth,
           );
           if (found) return found;
-        } else if (item === "manifest.js") {
+        } else if (item.startsWith("manifest.") && !item.endsWith(".map")) {
           const manifestPath = path.resolve(fullPath);
           const manifest = await this.loadManifest(manifestPath);
           if (manifest && manifest.name === targetName) {
@@ -120,12 +121,13 @@ class DiscoveryManager {
 
   /**
    * Loads a manifest from file.
-   * @param {string} manifestPath - Path to manifest.js
+   * Uses loadModule for AOT bundling support (TS, CJS, JSON, etc.)
+   * @param {string} manifestPath - Path to manifest.js/ts/cjs/json
    * @returns {Promise<object|null>} Promise resolving to loaded manifest or null
    */
   async loadManifest(manifestPath: string): Promise<Benchmark | null> {
     try {
-      const module = (await import(manifestPath)) as { default?: Benchmark };
+      const module = (await loadModule(manifestPath)) as { default?: Benchmark };
       const manifest = module.default || (module as Benchmark);
       // Validate manifest structure
       if (!manifest || typeof manifest !== "object") {

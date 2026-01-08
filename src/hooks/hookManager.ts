@@ -1,4 +1,4 @@
-import configManager from "../config/configManager";
+import configManager from "../config/configManager.ts";
 
 /**
  * Hook manager for executing custom code at specific points in the benchmark lifecycle.

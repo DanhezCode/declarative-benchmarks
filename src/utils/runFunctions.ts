@@ -1,11 +1,16 @@
-import adapterManager from "../adapters/adapterManager";
-import configManager from "../config/configManager";
-import hookManager from "../hooks/hookManager";
-import type { CaseResult, ComparatorAdapter, DiscoveredBenchmark, LoggerAdapter } from "../types";
+import adapterManager from "../adapters/adapterManager.ts";
+import configManager from "../config/configManager.ts";
+import hookManager from "../hooks/hookManager.ts";
+import type {
+  CaseResult,
+  ComparatorAdapter,
+  DiscoveredBenchmark,
+  LoggerAdapter,
+} from "../types.ts";
 
-import { runBenchmark } from "./benchmarkRunner";
-import { generateHistogram } from "./histogramGenerator";
-import { calculateStatistics } from "./statisticsCalculator";
+import { runBenchmark } from "./benchmarkRunner.ts";
+import { generateHistogram } from "./histogramGenerator.ts";
+import { calculateStatistics } from "./statisticsCalculator.ts";
 
 export async function runFunctionsBenchmark(benchmark: DiscoveredBenchmark) {
   if (!benchmark || typeof benchmark !== "object") {
