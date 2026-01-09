@@ -1,167 +1,215 @@
-# Declarative Benchmarks Library
+# Declarative Benchmarks
 
-A powerful and flexible library for running declarative performance benchmarks on functions within your project. Execute benchmarks automatically under a specified folder using a simple CLI command, compare performance metrics, and customize behavior through manifests, configurations, adapters, and hooks.
+> **⚠️ Work in Progress**  
+> This package is under active development. Features, APIs, and behavior may change, and breaking changes may occur between versions.
 
-**Note: This library is currently in development. While functional, it may contain bugs, incomplete features, or breaking changes in future versions. Use with caution.**
+Declarative Benchmarks lets you run performance benchmarks in a **simple, structured, and declarative way**.  
+Create a folder for each benchmark, define a `manifest.js`, and run it through the CLI.  
+The system automatically discovers benchmarks, executes them, and compares cases when multiple functions are defined.
 
-## Features
+---
 
-- **Automatic Discovery**: Automatically finds and runs benchmarks in specified directories.
-- **Declarative Manifests**: Define benchmarks using simple JavaScript objects with cases, scenarios, and payloads.
-- **Modular Adapters**: Customize logging, comparison, and other metrics with pluggable adapters.
-- **Hierarchical Configuration**: Override settings at global, manifest, or case levels.
-- **Lifecycle Hooks**: Execute custom code at various points in the benchmark lifecycle.
-- **Detailed Statistics**: Includes histograms, percentiles, CPU/memory usage, and confidence intervals.
-- **Cross-Platform CLI**: Run benchmarks via command line on Linux, macOS, and Windows.
+## 🚀 Overview
 
-## Installation
+**Declarative Benchmarks provides:**
 
-Install the library as a dependency in your project:
+- Declarative benchmark definitions through **manifests**
+- Automatic benchmark discovery (default directory: `bench/`)
+- CLI execution of a single benchmark by name
+- Multiple cases per benchmark with **automatic comparisons**
+- Detailed performance metrics (mean, percentiles, histograms, variance, etc.)
+- Support for custom adapters, hooks, exporters, and global configuration
+- **Hierarchical configuration inheritance** (case → manifest → user config → defaults)
+
+---
+
+## 📦 Installation
 
 ```bash
-npm install @danhezcode/declarative-benchmarks
-# or
 pnpm add @danhezcode/declarative-benchmarks
+# or
+npm install @danhezcode/declarative-benchmarks
 # or
 yarn add @danhezcode/declarative-benchmarks
 ```
 
-After installation, the `bench` command will be available in your project.
+Add a script to your `package.json`:
 
-For global installation (to use `bench` from anywhere):
-
-```bash
-npm install -g @danhezcode/declarative-benchmarks
-# or
-pnpm add -g @danhezcode/declarative-benchmarks
+```json
+{
+  "scripts": {
+    "bench": "bench"
+  }
+}
 ```
 
-For development or to build from source:
+---
+
+## 🧪 Running Benchmarks
+
+1. Create a folder in your project, ideally named **`bench/`**.
+2. Inside it, create a folder for each benchmark, for example:
+   - `bench/example-benchmark/`
+3. Inside that folder, create a **`manifest.js`** file.
+4. Run the benchmark by name:
 
 ```bash
-git clone <repository-url>
-cd declarative-benchmarks
-pnpm install
-pnpm build
+pnpm bench example-benchmark
 ```
 
-## Basic Usage
+The name must match the `name` field inside the manifest.
 
-The `bench` command is the primary way to run benchmarks. It automatically discovers and executes benchmarks defined in manifests under the specified directory.
+---
 
-### Running All Benchmarks
+## 📁 Recommended Project Structure
 
-To run all benchmarks in the default `bench/` directory:
-
-```bash
-bench
+```
+project/
+  bench/
+    example-benchmark/
+      manifest.js
+      example-case-1.js
+      example-case-2.js
+  src/
+  package.json
 ```
 
-Or if installed locally:
+Where:
 
-```bash
-npx bench
-```
+- `example-benchmark/` contains one benchmark
+- `example-case-1.js` and `example-case-2.js` export the functions referenced in the manifest
 
-This discovers all manifests under `bench/` and executes them.
+---
 
-### Running a Specific Benchmark
+## 📄 Example Manifest (Fully Commented)
 
-To run a single benchmark by its manifest name:
+```js
+// bench/example-benchmark/manifest.js
 
-```bash
-bench <benchmark-name>
-```
+import exampleCase1 from "./example-case-1.js";
+import exampleCase2 from "./example-case-2.js";
 
-For example:
-
-```bash
-bench math-example
-```
-
-This is the most important feature: specify the name of the manifest (e.g., the directory or name defined in `manifest.js`) to run only that specific benchmark.
-
-## CLI Options
-
-The `bench` command supports the following:
-
-- `<name>`: Name of the benchmark to run (optional; runs all if omitted).
-
-The CLI is built with Node.js and works across platforms.
-
-## Manifest
-
-A manifest is a JavaScript file (`manifest.js`) that defines a benchmark. Place it in a subdirectory under your benchmark directory (e.g., `bench/my-benchmark/manifest.js`).
-
-### Manifest Structure
-
-```javascript
 export default {
-  name: "my-benchmark",
-  description: "Description of what this benchmark tests",
+  // The name of the benchmark. Must match the CLI argument.
+  name: "example-benchmark",
 
+  // Optional description.
+  description: "Example benchmark comparing two simple functions",
+
+  // Each case represents a function you want to measure.
   cases: [
     {
-      name: "case1",
-      fn: myFunction1,
-      description: "Description of case 1",
+      name: "example-case-1",
+      fn: exampleCase1,
+      description: "First example function",
     },
     {
-      name: "case2",
-      fn: myFunction2,
-      description: "Description of case 2",
+      name: "example-case-2",
+      fn: exampleCase2,
+      description: "Second example function",
     },
-    // Add more cases...
   ],
 
+  // Scenarios define how each case is executed.
   scenarios: [
     {
-      name: "small",
-      params: {},
+      name: "scenario-small",
       iterations: 100000,
-      time: 5000,
-      priorityCpu: false,
-      description: "Test with small inputs",
+      time: 3000,
+      description: "Small input scenario",
     },
     {
-      name: "large",
-      params: {},
-      iterations: 100000,
-      time: 5000,
-      description: "Test with large inputs",
+      name: "scenario-large",
+      iterations: 50000,
+      time: 3000,
+      description: "Large input scenario",
     },
-    // Add more scenarios...
   ],
 
+  // Generates input data for each scenario.
   generatePayload(scenario) {
-    // Generate input data based on the scenario
-    if (scenario.name === "small") {
-      return { a: 1, b: 2 };
-    } else {
-      return { a: 1000000, b: 2000000 };
+    if (scenario.name === "scenario-small") {
+      return { value: 10 };
     }
+
+    return { value: 1_000_000 };
   },
 };
 ```
 
-- **name**: Unique identifier for the benchmark.
-- **description**: Optional description.
-- **cases**: Array of functions to benchmark. Each case includes `name`, `fn` (the function), and `description`.
-- **scenarios**: Array of test configurations. Define iterations, time limits, etc.
-- **generatePayload**: Function to create input data for each scenario.
+---
 
-## Configuration
+## ▶️ Running the Example Benchmark
 
-Configuration is hierarchical: case > manifest > global. Use `bench.config.js` or `bench.config.ts` in your project root.
+```bash
+pnpm bench example-benchmark
+```
 
-### Global Configuration (bench.config.js)
+The CLI will:
 
-```javascript
+- Load the manifest
+- Execute each case under each scenario
+- Produce detailed metrics
+- Compare cases automatically
+
+---
+
+## ⚙️ Global Configuration (bench.config.js / bench.config.ts)
+
+You can define global settings in:
+
+- `bench.config.js`
+- `bench.config.ts`
+- Any equivalent ESM configuration file
+
+Global configuration allows you to:
+
+- Override default benchmark settings
+- Register custom exporters (JSON, CSV, file writers, DB adapters, etc.)
+- Register custom loggers or comparators
+- Add lifecycle hooks
+- Change discovery behavior
+- Modify output behavior
+
+### 🔁 Configuration Inheritance
+
+Configuration is **hierarchical**, allowing fine‑grained control:
+
+```
+case-level config
+    ↓ overrides
+manifest-level config
+    ↓ overrides
+user global config (bench.config.js)
+    ↓ overrides
+internal defaults
+```
+
+This means you can:
+
+- Set global defaults for all benchmarks
+- Override them per manifest
+- Override them again per case
+
+This gives you full flexibility for complex benchmarking setups.
+
+---
+
+## 🛠️ Example: `bench.config.js`
+
+```js
+/**
+ * Global benchmark configuration.
+ * Default settings can be overridden by manifest-level or case-level configs.
+ */
 export default {
+  // Where benchmarks are discovered
   discovery: {
-    benchmarkDir: "bench/", // Directory to scan for benchmarks
-    maxDepth: 3, // Max directory depth
+    benchmarkDir: "bench/",
+    maxDepth: 3,
   },
+
+  // Lifecycle hooks
   hooks: {
     preBenchmark: [],
     postBenchmark: [],
@@ -170,15 +218,22 @@ export default {
     preCase: [],
     postCase: [],
   },
+
+  // Custom adapters (logger, comparator, exporters, etc.)
   adapters: {
-    logger: null, // Custom logger adapter
-    comparator: null, // Custom comparator adapter
+    logger: null, // Use default logger if null
+    comparator: null, // Use default comparator if null
+    // Add custom exporters or notifiers here
   },
+
+  // Default execution settings
   defaults: {
     iterations: 100000,
     timeLimit: 5000,
     priorityCpu: false,
   },
+
+  // Output configuration
   output: {
     enableConsole: true,
     saveToFile: false,
@@ -187,90 +242,16 @@ export default {
 };
 ```
 
-Override settings in manifests or cases as needed.
+---
 
-## Adapters
+## 🤝 Contributing
 
-Adapters allow customization of logging and result comparison.
-
-### Logger Adapter
-
-Handles output of results. Default is console logging.
-
-To customize, set in `bench.config.js`:
-
-```javascript
-adapters: {
-  logger: MyCustomLogger,
-},
-```
-
-Your adapter must implement `logTestCaseResults(options)`.
-
-### Comparator Adapter
-
-Compares results between cases. Default prints a comparison table.
-
-Customize similarly to the logger.
-
-## Hooks
-
-Hooks run custom code at lifecycle points: `preBenchmark`, `postBenchmark`, `preScenario`, `postScenario`, `preCase`, `postCase`.
-
-Example:
-
-```javascript
-hooks: {
-  preBenchmark: [
-    (context) => console.log("Starting benchmark:", context.name),
-  ],
-  postCase: [
-    (context) => console.log("Case completed:", context.results),
-  ],
-},
-```
-
-## Statistics and Metrics
-
-For each case, the library calculates:
-
-- Mean, median, standard deviation times.
-- Percentiles (P50, P90, P95, P99).
-- Time histograms.
-- CPU and memory usage.
-- Coefficient of variation.
-- Confidence intervals.
-
-## Development Status and Known Issues
-
-This library is in active development. Current version: 1.0.0.
-
-### Potential Issues
-
-- Error handling may be incomplete; some edge cases could cause crashes.
-- Performance metrics might vary across environments (e.g., CPU priority settings).
-- Limited adapter ecosystem; only basic logger and comparator provided.
-- No built-in support for exporting results to external formats (e.g., JSON, CSV).
-- CLI may not handle very large outputs gracefully.
-
-### Areas for Improvement
-
-- Add more built-in adapters (e.g., file exporters, database loggers).
-- Improve error recovery and validation for manifests.
-- Support for asynchronous benchmarks.
-- Integration with CI/CD pipelines.
-- More detailed documentation and examples.
-- Localization for output messages.
-- Support for custom metrics beyond time and resource usage.
-
-Contributions are welcome! Please report issues or suggest features via GitHub.
-
-## License
-
-See LICENSE file for details.
+This is an open‑source project, and contributions are welcome.  
+Please read the **CONTRIBUTING.md** file before submitting pull requests.
 
 ---
 
-### ⭐ Support
+## ⭐ Support the Project
 
-If this library helps you, consider giving it a star on GitHub.
+If this package is useful to you, consider **starring the repository** on GitHub.  
+It helps visibility and motivates continued development.
