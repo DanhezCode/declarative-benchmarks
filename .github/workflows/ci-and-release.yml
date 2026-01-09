@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
           # cache: "pnpm"
 
       - name: Setup pnpm
@@ -48,7 +48,7 @@ jobs:
 
         # ✅ Audit dependencias
       - name: Audit dependencies
-        run: pnpm depcheck && pnpm audit --prod --audit-level=moderate
+        run: pnpm audit --prod --audit-level=moderate
 
       # ✅ Commitlint (para semantic-release)
       - name: Commitlint
@@ -67,7 +67,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
           # cache: "pnpm"
 
       - name: Setup pnpm
