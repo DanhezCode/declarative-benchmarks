@@ -1,0 +1,82 @@
+name: CI & Release
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  # 🔍 Validaciones en Pull Request
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+          run_install: true
+
+      # ✅ Linter + Prettier
+      - name: Lint
+        run: pnpm lint:fix
+
+      - name: Prettier check
+        run: pnpm format
+
+      # ✅ TypeScript type-check
+      - name: TypeScript check
+        run: pnpm typecheck
+
+      # ✅ Tests con cobertura
+      - name: Run tests
+        run: pnpm test
+
+      # ✅ Build check
+      - name: Build
+        run: pnpm build
+
+        # ✅ Audit dependencias
+      - name: Audit dependencies
+        run: pnpm depcheck && pnpm audit --prod --audit-level=moderate
+
+      # ✅ Commitlint (para semantic-release)
+      - name: Commitlint
+        run: pnpm commitlint --from=origin/main --to=HEAD
+
+  # 🚀 Release automático en main
+  release:
+    needs: validate
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency: release
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+          run_install: true
+
+      # 🔑 Semantic Release
+      - name: Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm semantic-release
