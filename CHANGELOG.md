@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1](https://github.com/DanhezCode/declarative-benchmarks/compare/v1.0.0...v1.0.1) (2026-01-09)
+
+
+### Bug Fixes
+
+* restore registry URL in .npmrc configuration ([5efeec6](https://github.com/DanhezCode/declarative-benchmarks/commit/5efeec64d833fd7f8b93820fba8f249bde9d1f02))
+
 # 1.0.0 (2026-01-09)
 
 
