@@ -87,10 +87,19 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Debug npmrc
+        run: |
+          echo "=== ROOT .npmrc ==="
+          cat .npmrc || true
+          echo "=== HOME .npmrc ==="
+          cat ~/.npmrc || true
+          echo "=== TEMP .npmrc ==="
+          cat /home/runner/work/_temp/.npmrc || true
+
       # 🔑 Semantic Release
       - name: Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: pnpm semantic-release
