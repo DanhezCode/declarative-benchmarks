@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1](https://github.com/DanhezCode/declarative-benchmarks/compare/v1.1.0...v1.1.1) (2026-01-09)
+
+
+### Bug Fixes
+
+* adjust permissions and branches in the CI configuration ([d791eb7](https://github.com/DanhezCode/declarative-benchmarks/commit/d791eb7e4d79292ba744290a8d1491838445d8ad))
+
 # [1.1.0](https://github.com/DanhezCode/declarative-benchmarks/compare/v1.0.1...v1.1.0) (2026-01-09)
 
 
