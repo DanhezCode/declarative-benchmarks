@@ -15,7 +15,8 @@
     "url": "https://github.com/DanhezCode"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "homepage": "https://github.com/DanhezCode/declarative-benchmarks#readme",
   "repository": {
@@ -51,6 +52,8 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "test": "node --test",
+    "test:watch": "node --test --watch",
+    "semantic-release": "semantic-release",
     "prepare": "husky"
   },
   "devDependencies": {
