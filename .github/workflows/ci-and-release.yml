@@ -25,7 +25,6 @@ jobs:
         with:
           node-version: 24
           # cache: "pnpm"
-          registry-url: "https://registry.npmjs.org"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -83,7 +82,6 @@ jobs:
         with:
           node-version: 24
           # cache: "pnpm"
-          registry-url: "https://registry.npmjs.org"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -100,6 +98,8 @@ jobs:
           echo "=== HOME .npmrc ==="
           cat ~/.npmrc || true
           echo "=== TEMP .npmrc ==="
+          cat /home/runner/work/_temp/.npmrc || true
+          rm /home/runner/work/_temp/.npmrc || true
           cat /home/runner/work/_temp/.npmrc || true
 
       # 🔑 Semantic Release
