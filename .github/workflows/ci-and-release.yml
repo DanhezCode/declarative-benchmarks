@@ -17,13 +17,15 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 20
-          cache: "pnpm"
+          # cache: "pnpm"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10
-          run_install: true
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       # ✅ Linter + Prettier
       - name: Lint
@@ -66,13 +68,15 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 20
-          cache: "pnpm"
+          # cache: "pnpm"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10
-          run_install: true
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       # 🔑 Semantic Release
       - name: Semantic Release
